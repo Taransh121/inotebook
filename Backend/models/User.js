@@ -1,4 +1,5 @@
 const mongoose=require("mongoose");
+const {Schema}=mongoose;
 
 //Creating a schema
 const UserSchema=new Schema({
