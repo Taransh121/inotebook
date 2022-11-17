@@ -4,10 +4,11 @@ const router = express.Router()    //jo hum app.get ya app.post likhte hai ab vo
 const { body, validationResult } = require('express-validator'); //Data validation
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
+const fetchuser=require("../middleware/fetchuser")
 
 const jwtSecret = "70707"
 
-//Create a user using POST "api/auth/createuser" , Doesnt require auth.
+//ROUTE 1 - Create a user using POST "api/auth/createuser" , Doesnt require auth.
 router.post("/createuser", [
     //Is array ke andar hum apne saare validations likhenge.
     // email must be an email
@@ -16,7 +17,6 @@ router.post("/createuser", [
     body('name', "Enter a valid name").isLength({ min: 3 }),
     // password must be at least 5 chars long
     body('password', "Password must be atleast 5 characters").isLength({ min: 5 }),
-
 ], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {  //agar errors empty nhi hai toh hum ek 400 bad request bhejenge aur jo errors hai unko bhejenge 
@@ -45,12 +45,12 @@ router.post("/createuser", [
         // res.json(newuser)
     } catch (error) {
         console.log(error);
-    res.status(500).send("Internal server error.")
+        res.status(500).send("Internal server error.")
     }
 })
 
 
-//Authenticate a user using POST "api/auth/login" , No login required.
+//ROUTE 2 - Authenticate a user using POST "api/auth/login" , No login required.
 router.post("/login", [
     body('email', "Enter a valid email").isEmail(),
     body('password', "Password cannot be blank").exists(),
@@ -61,31 +61,46 @@ router.post("/login", [
         if (!errors.isEmpty()) {  //agar errors empty nhi hai toh hum ek 400 bad request bhejenge aur jo errors hai unko bhejenge 
             return res.status(400).json({ errors: errors.array() });
         }
-//In ideal case there wont be an error and user will provide the email and password,we will fetch it here-
-const { email, password } = req.body;
-try {
-    let user = await User.findOne({ email }); //Check if the email which is entered by the user exists or not in our database.
-    if (!user) {
-        //If user does not exists
-        return (res.status(400).json({ error: "Login with correct credentialss" }))
-    }
-    const passwordCompare = await bcrypt.compare(password, user.password) //We are comparing the pw which is entered by the user and its original pw.It returns true or false.
-    if (!passwordCompare) {
-        //If pw does not matches
-        return (res.status(400).json({ error: "Login with correct credentials" }))
-    }
-    //If pw is correct.
-    const data = {
-        user: {
-            id: user.id
-        }
-    }
-    const authToken = jwt.sign(data, jwtSecret);
-    res.json({ authToken });
+        //In ideal case there wont be an error and user will provide the email and password,we will fetch it here-
+        const { email, password } = req.body;
+        try {
+            let user = await User.findOne({ email }); //Check if the email which is entered by the user exists or not in our database.
+            if (!user) {
+                //If user does not exists
+                return (res.status(400).json({ error: "Login with correct credentialss" }))
+            }
+            const passwordCompare = await bcrypt.compare(password, user.password) //We are comparing the pw which is entered by the user and its original pw.It returns true or false.
+            if (!passwordCompare) {
+                //If pw does not matches
+                return (res.status(400).json({ error: "Login with correct credentials" }))
+            }
+            //If pw is correct.
+            const data = {
+                user: {
+                    id: user.id
+                }
+            }
+            const authToken = jwt.sign(data, jwtSecret);
+            res.json({ authToken });
 
-} catch (error) {
-    console.log(error);
-    res.status(500).send("Internal server error.")
-}})
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal server error.")
+        }
+    })
+//ROUTE 3 - Get logged in user details using POST "api/auth/getuser" , Login required.
+router.post("/getuser", fetchuser, async (req, res) => {
+        try {
+            userId=req.user.id;
+            const user=await User.findById(userId).select("-password") //Iska ye mtlb hai ki jab hume user miljyega toh hum uski har field ko select kr skte hai except uske pw ke.
+            res.json({user})
+            
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal server error.")
+        }
+
+    })
+
 
 module.exports = router;
