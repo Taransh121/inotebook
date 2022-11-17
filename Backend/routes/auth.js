@@ -91,7 +91,7 @@ router.post("/login", [
 //ROUTE 3 - Get logged in user details using POST "api/auth/getuser" , Login required.
 router.post("/getuser", fetchuser, async (req, res) => {
         try {
-            userId=req.user.id;
+            const userId=req.user.id;
             const user=await User.findById(userId).select("-password") //Iska ye mtlb hai ki jab hume user miljyega toh hum uski har field ko select kr skte hai except uske pw ke.
             res.json({user})
             
