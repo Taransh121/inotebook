@@ -41,3 +41,26 @@ router.post("/addnotes",fetchuser, [
 })
 
 module.exports=router;
+
+//ROUTE 3 - Update an existing note PUT request /api/notes/updatenote. Login Required.Also the id of the note which we want to update is required
+router.put("/updatenote/:id",fetchuser,async (req,res)=>{
+    const {title,description,tag}=req.body;
+    //Create a new note object
+    const newNote={};
+    if(title){newNote.title=title}; //Agar title arha hai naya toh usko newNote ke title ke equal krdo.
+    if(description){newNote.description=description};
+    if(tag){newNote.tag=tag};
+
+    //find the note to be updated and update it.
+    let note=await Notes.findById(req.params.id); //Ab ye vahi note hai jiski upar endpoint me id given hai.
+    if(!note){
+        return res.status(404).send("Note found")
+    }
+    if(note.user.toString()!= req.user.id) //Agar jiska note hai vo user aur jo user request send krra hai dono same nhi hai toh koi hack krna chahra hai.
+    {
+        return res.status(401).send("Not allowed")
+    }
+    note= await Notes.findByIdAndUpdate(req.params.id, {$set:newNote} )
+    res.json({note})
+
+})
