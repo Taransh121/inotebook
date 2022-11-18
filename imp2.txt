@@ -1,0 +1,1 @@
+We will use "npm run both" and it will automatically start the react app as well as the backend server as we have already installed concurrently.
