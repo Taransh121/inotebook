@@ -1,1 +1,7 @@
 We will use "npm run both" and it will automatically start the react app as well as the backend server as we have already installed concurrently.
+
+Why use Context API?
+At a very high level, A react app consists of ‘state’ and ‘components’. As we already know that every component in React has its own state. Due to this reason, building and managing a complex application that has a large number of states and components isn’t an easy task. We can resolve this issue with the help of state lifting technique
+
+Understanding Context API-
+The Context API can be used to share data with multiple components, without having to pass data through props manually. Let’s deal with the similar prop drilling issue with the help of context API as shown below:

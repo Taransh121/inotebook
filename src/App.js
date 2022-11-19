@@ -4,10 +4,12 @@ import { BrowserRouter as Router, Switch, Route,} from "react-router-dom";
 import { Navbar } from './components/Navbar';
 import { Home } from './components/Home';
 import { About } from './components/About';
+import NoteState from './context/NoteState';
 
 function App() {
   return (
     <>
+    <NoteState>  {/*We have wrapped our entire application inside this NoteState as we want that all the components to get access to the states. */}
       <Router>
         <Navbar />
         <Switch>
@@ -22,6 +24,7 @@ function App() {
           </Route>
         </Switch>
       </Router>
+    </NoteState>
     </>
   );
 }
