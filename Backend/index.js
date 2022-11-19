@@ -16,5 +16,5 @@ app.get("/",(req,res)=>{
     res.send("Hello");
 })
 app.listen(port,()=>{
-    console.log(`Example app listening at http://localhost:${port}`);
+    console.log(`iNotebook Backend listening at http://localhost:${port}`);
 })
