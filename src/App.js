@@ -12,9 +12,10 @@ function App() {
     <NoteState>  {/*We have wrapped our entire application inside this NoteState as we want that all the components to get access to the states. */}
       <Router>
         <Navbar />
+        <div className="container">
         <Switch>
           <Route exact path="/">
-            <Home />
+            <Home/>
           </Route>
           <Route exact path="/about">
             <About />
@@ -23,6 +24,7 @@ function App() {
             <Home />
           </Route>
         </Switch>
+        </div>
       </Router>
     </NoteState>
     </>
