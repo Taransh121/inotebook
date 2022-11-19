@@ -1,6 +1,8 @@
-import React from 'react'
+import React from 'react';
+import { Notes } from './Notes';
 
 export const Home = () => {
+
   return (
     <>
     <div className="container my-3">
@@ -19,12 +21,10 @@ export const Home = () => {
           <label htmlFor="exampleTags" className="form-label"><strong>Tags:</strong></label>
           <input type="text" className="form-control" id="exampleTags"/>
         </div>
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button type="submit" className="btn btn-outline-primary">Submit</button>
       </form>
     </div>
-    <div className="container my-5">
-      <h1>Your notes-</h1>
-    </div>
+    <Notes/>
     </>
   )
 }
