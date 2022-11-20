@@ -32,7 +32,7 @@ export const Addnote = () => {
           <label htmlFor="tags" className="form-label"><strong>Tags:</strong></label>
           <input type="text" className="form-control" id="tags" name='tags' onChange={onchange} />
         </div>
-        <button type="submit" onClick={addnotebtn} className="btn btn-outline-primary">Submit</button>
+        <button type="submit" onClick={addnotebtn} className="btn btn-outline-primary">Add Note</button>
       </form>
     </div>
   )

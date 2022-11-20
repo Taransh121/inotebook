@@ -1,7 +1,9 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React,{useContext} from 'react'
+import noteContext from '../context/NoteContext';
 
 export const Noteitem = (props) => {
+    const context = useContext(noteContext);
+    const {deletenote}=context;
     const { note } = props;
     return (
         <div className='col-md-3' >
@@ -12,7 +14,7 @@ export const Noteitem = (props) => {
                         <p className="card-text">Description : {note.description}</p>
                         <p className='card-text'>Tags : {note.tag}</p>
                         <hr/>
-                        <i className="far fa-trash-alt mx-2"></i>
+                        <i className="far fa-trash-alt mx-2" id="dltnote" onClick={()=>{deletenote(note._id)}}></i>
                         <i className="far fa-edit mx-3"></i> 
                     </div>
             </div>

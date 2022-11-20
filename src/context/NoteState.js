@@ -40,8 +40,10 @@ const NoteState=(props)=>{
     }
 
     //DELETE A NOTE-
-    const deletenote=()=>{
-
+    const deletenote=(id)=>{
+      console.log("Deleting a note with id " + id);
+      const newNotes=notes.filter((note)=>{return note._id!=id})    //notes.filter returns an array of all the notes whose id is not matching with the id which we are passing to the deletenote() function.Thus which note which we wanna delete.
+      setNotes(newNotes)
     }
 
     //EDIT A NOTE-
