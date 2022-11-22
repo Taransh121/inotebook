@@ -3,3 +3,5 @@ We use "express-validator" for data validation.
 We use "bcryptjs" for secured password Hashing.
 
 We use "jwtwebtoken" for providing authentication token which can be used to authenticate the user.
+
+We use "npm install cors" because the react app doesnt directly allow us to call this api.
