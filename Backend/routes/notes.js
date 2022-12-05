@@ -76,7 +76,7 @@ router.delete("/deletenote/:id", fetchuser, async (req, res) => {
         //find the note to be updated and delete it.
         let note = await Notes.findById(req.params.id); //Ab ye vahi note hai jiski upar endpoint me id given hai.
         if (!note) {
-            return res.status(404).send("Note found")
+            return res.status(404).send("Note not found")
         }
         //Allow deleteion only if user owns this note.
         if (note.user.toString() != req.user.id) //Agar jiska note hai vo user aur jo user request send krra hai dono same nhi hai toh koi hack krna chahra hai.

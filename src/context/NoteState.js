@@ -17,7 +17,7 @@ const NoteState = (props) => {
       },
     });
     const json= await response.json();
-    console.log(json);
+    // console.log(json);
     setNotes(json)
   }
   
@@ -31,7 +31,9 @@ const NoteState = (props) => {
       "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjM3NGJiNzNkOGUyZDEwMjZhMzkyZDAwIn0sImlhdCI6MTY2ODcxNjQwMX0.eUDfY1j6yopOnscTsHEkaIDSU-BeXWFrMX9O_ftHTx4"
     },
     body: JSON.stringify({title,description,tag})
-  })
+    
+  });
+
   // const json = response.json();
   //LOGIC TO ADD A NOTE-
     const note = {
@@ -47,7 +49,17 @@ const NoteState = (props) => {
   }
 
   //DELETE A NOTE-
-  const deletenote = (id) => {
+  const deletenote = async (id) => {
+    //API CALL-
+    const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjM3NGJiNzNkOGUyZDEwMjZhMzkyZDAwIn0sImlhdCI6MTY2ODcxNjQwMX0.eUDfY1j6yopOnscTsHEkaIDSU-BeXWFrMX9O_ftHTx4"
+      }
+    })
+    const json=response.json();
+    console.log(json);
     console.log("Deleting a note with id " + id);
     const newNotes = notes.filter((note) => { return note._id != id })    //notes.filter returns an array of all the notes whose id is not matching with the id which we are passing to the deletenote() function.Thus which note which we wanna delete.
     setNotes(newNotes)
