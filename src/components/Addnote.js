@@ -9,7 +9,8 @@ export const Addnote = () => {
     const [note,setNote]=useState({title:"",description:"",tags:""})
     const addnotebtn=(e)=>{
         e.preventDefault();
-        addnote(note.title,note.description,note.tags)
+        addnote(note.title,note.description,note.tags);
+        setNote({title:"",description:"",tags:""})
     }
     const onchange=(e)=>{
         setNote({...note,[e.target.name]:e.target.value})  //Whatever is changing,its name shld be equalto its value.
@@ -21,18 +22,18 @@ export const Addnote = () => {
       <h1> Add a note-</h1>
         <div className="mb-3">
           <label htmlFor="title" className="form-label"> <strong>Title:</strong></label>
-          <input type="text" className="form-control" name='title' onChange={onchange} id="title" aria-describedby="emailHelp"/>
+          <input type="text"  className="form-control" name='title' onChange={onchange} value={note.title} id="title" aria-describedby="emailHelp"/>
             {/* <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div> */}
         </div>
         <div className="mb-3">
           <label htmlFor="description" className="form-label"><strong>Description:</strong> </label>
-          <input type="text" className="form-control" name='description' onChange={onchange} id="description"/>
+          <input type="text" className="form-control" name='description' onChange={onchange} value={note.description} id="description"/>
         </div>
         <div className="mb-3">
           <label htmlFor="tags" className="form-label"><strong>Tags:</strong></label>
-          <input type="text" className="form-control" id="tags" name='tags' onChange={onchange} />
+          <input type="text" className="form-control" id="tags" name='tags' onChange={onchange} value={note.tags} />
         </div>
-        <button type="submit" onClick={addnotebtn} className="btn btn-outline-primary">Add Note</button>
+        <button disabled={note.title.length<5 || note.description.length<5} type="submit" onClick={addnotebtn} className="btn btn-outline-primary">Add Note</button>
       </form>
     </div>
   )

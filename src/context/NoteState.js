@@ -34,18 +34,9 @@ const NoteState = (props) => {
     
   });
 
-  // const json = response.json();
   //LOGIC TO ADD A NOTE-
-    const note = {
-      "_id": "63792d5b71dae2f89d3b6e04",
-      "user": "6374bb73d8e2d1026a392d01",
-      "title": title,
-      "description": description,
-      "tag": tag,
-      "date": "2022-11-19T19:24:11.678Z",
-      "__v": 0
-    }
-    setNotes(notes.concat(note));
+  const note =await response.json();
+  setNotes(notes.concat(note));
   }
 
   //DELETE A NOTE-
@@ -59,7 +50,7 @@ const NoteState = (props) => {
       }
     })
     const json= await response.json();
-    console.log(json);
+    // console.log(json);
     console.log("Deleting a note with id " + id);
     const newNotes = notes.filter((note) => { return note._id != id })    //notes.filter returns an array of all the notes whose id is not matching with the id which we are passing to the deletenote() function.Thus which note which we wanna delete.
     setNotes(newNotes)
