@@ -58,7 +58,7 @@ const NoteState = (props) => {
         "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjM3NGJiNzNkOGUyZDEwMjZhMzkyZDAwIn0sImlhdCI6MTY2ODcxNjQwMX0.eUDfY1j6yopOnscTsHEkaIDSU-BeXWFrMX9O_ftHTx4"
       }
     })
-    const json=response.json();
+    const json= await response.json();
     console.log(json);
     console.log("Deleting a note with id " + id);
     const newNotes = notes.filter((note) => { return note._id != id })    //notes.filter returns an array of all the notes whose id is not matching with the id which we are passing to the deletenote() function.Thus which note which we wanna delete.
@@ -76,16 +76,19 @@ const NoteState = (props) => {
       },
       body: JSON.stringify({title,description,tag})
     })
-    const json = response.json();
+    const json = await response.json();
+    let newnote=JSON.parse(JSON.stringify(notes))  //We will have to create a newnote instead of editing the old one if we want it to update without reloading in the frontend.
     //LOGIC TO EDIT A NOTE-
-    for (let index = 0; index < notes.length; index++) {
+    for (let index = 0; index < newnote.length; index++) {
       const element = notes[index];
       if (element._id == id) {
-        element.title = title;
-        element.description = description;
-        element.tag = tag;
+        newnote[index].title = title;
+        newnote[index].description = description;
+        newnote[index].tag = tag;
+        break;
       }
     }
+    setNotes(newnote);
   }
 
   return (
