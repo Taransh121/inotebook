@@ -20,13 +20,15 @@ router.post("/createuser", [
 ], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {  //agar errors empty nhi hai toh hum ek 400 bad request bhejenge aur jo errors hai unko bhejenge 
-        return res.status(400).json({ errors: errors.array() });
+        success=false;
+        return res.status(400).json({success, errors: errors.array() });
     }
     //Check weather the user with same email already exists
     try {
         let newuser = await User.findOne({ email: req.body.email });  //It finds if the email already exists or not
         if (newuser) {
-            return (res.status(400).json({ error: "Sorry a user with this email already exists" }))  //If email alr exists it gives this response .
+            success=false;
+            return (res.status(400).json({success, error: "Sorry a user with this email already exists" }))  //If email alr exists it gives this response .
         }
         const salt = await bcrypt.genSalt(10);
         const securedPAssword = await bcrypt.hash(req.body.password, salt);
@@ -41,11 +43,13 @@ router.post("/createuser", [
             }
         }
         const authToken = jwt.sign(data, jwtSecret);
-        res.json({ authToken });   //ab jab bhi hum ek new user create krenge toh vo hume ek authToken provide krega jisko use krke hum vaps se us authToken ko convert kr skte hai us data mai aur apne secret ki help se we can check if anyone has tampered with it.We will check it using a function "jwt.verify()"
+        success=true;
+        res.json({ success,authToken });   //ab jab bhi hum ek new user create krenge toh vo hume ek authToken provide krega jisko use krke hum vaps se us authToken ko convert kr skte hai us data mai aur apne secret ki help se we can check if anyone has tampered with it.We will check it using a function "jwt.verify()"
         // res.json(newuser)
     } catch (error) {
         console.log(error);
-        res.status(500).send("Internal server error.")
+        success=false;
+        res.status(500).send(success,"Internal server error.")
     }
 })
 
@@ -59,7 +63,8 @@ router.post("/login", [
         //If there are errors then return a bad request and return the array of errors.
         const errors = validationResult(req);
         if (!errors.isEmpty()) {  //agar errors empty nhi hai toh hum ek 400 bad request bhejenge aur jo errors hai unko bhejenge 
-            return res.status(400).json({ errors: errors.array() });
+            success=false;
+            return res.status(400).json({success, errors: errors.array() });
         }
         //In ideal case there wont be an error and user will provide the email and password,we will fetch it here-
         const { email, password } = req.body;
@@ -67,12 +72,14 @@ router.post("/login", [
             let user = await User.findOne({ email }); //Check if the email which is entered by the user exists or not in our database.
             if (!user) {
                 //If user does not exists
-                return (res.status(400).json({ error: "Login with correct credentialss" }))
+                success=false;
+                return (res.status(400).json({ success,error: "Login with correct credentialss" }))
             }
             const passwordCompare = await bcrypt.compare(password, user.password) //We are comparing the pw which is entered by the user and its original pw.It returns true or false.
             if (!passwordCompare) {
                 //If pw does not matches
-                return (res.status(400).json({ error: "Login with correct credentials" }))
+                success=false;
+                return (res.status(400).json({success, error: "Login with correct credentials" }))
             }
             //If pw is correct.
             const data = {
@@ -81,11 +88,13 @@ router.post("/login", [
                 }
             }
             const authToken = jwt.sign(data, jwtSecret);
-            res.json({ authToken });
+        success=true;
+            res.json({success, authToken });
 
         } catch (error) {
             console.log(error);
-            res.status(500).send("Internal server error.")
+            success=false;
+            res.status(500).send(success,"Internal server error.")
         }
     })
 //ROUTE 3 - Get logged in user details using POST "api/auth/getuser" , Login required.
@@ -97,7 +106,8 @@ router.post("/getuser", fetchuser, async (req, res) => {
             
         } catch (error) {
             console.log(error);
-            res.status(500).send("Internal server error.")
+            success=false;
+            res.status(500).send(success,"Internal server error.")
         }
 
     })

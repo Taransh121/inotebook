@@ -28,7 +28,6 @@ export const Notes = () => {
     }
     const onChange=(e)=>{
         setNote({...note,[e.target.name]:e.target.value})  //Whatever is changing,its name shld be equalto its value.
-
     }
 
     return (
