@@ -8,27 +8,36 @@ import NoteState from './context/NoteState';
 import { Alert } from './components/Alert';
 import { Login } from './components/Login';
 import { Signup } from './components/Signup';
+import { useState } from 'react';
 
 function App() {
+  const [alert, setAlert] = useState(null);
+  const showAlert=(message,type)=>{
+    setAlert({message,type})
+    setTimeout(()=>{
+      setAlert(null)
+    },2000);
+
+  }
   return (
     <>
     <NoteState>  {/*We have wrapped our entire application inside this NoteState as we want that all the components to get access to the states. */}
       <Router>
         <Navbar />
-        <Alert alertMessage={"This is a Primary Alert"}/>
+        <Alert alert={alert}/>
         <div className="container">
         <Switch>
           <Route exact path="/">
-            <Home/>
+            <Home showAlert={showAlert} />
           </Route>
           <Route exact path="/about">
             <About />
           </Route>
           <Route exact path="/login">
-            <Login/>
+            <Login showAlert={showAlert}/>
           </Route>
           <Route exact path="/signup">
-            <Signup/>
+            <Signup showAlert={showAlert}/>
           </Route>
           
         </Switch>

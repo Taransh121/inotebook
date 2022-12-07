@@ -2,7 +2,9 @@ import React from 'react'
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-export const Signup = () => {
+export const Signup = (props) => {
+    // const {showAlert}=props;
+
     const [creds, setCreds] = useState({ name: "", email: "", password: "", cpassword: "" })
 
     let history = useHistory();  //Using this for redirecting.
@@ -25,9 +27,11 @@ export const Signup = () => {
             //Save the auth token Redirect
             localStorage.setItem("token",json.authtoken);
             history.push("/");
+            props.showAlert("Account created successfully.","success")
         }
         else{
-            alert("User Already exists")
+            // alert("User Already exists")
+            props.showAlert("Invalid Credentials","danger")
         }
     }
     const onchange = (e) => {
