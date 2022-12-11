@@ -8,14 +8,25 @@ const { request } = require("express");
 
 
 //ROUTE 1 - Get all the routes using GET request /api/notes/fetchallnotes. Login Required.
-router.get("/fetchallnotes", fetchuser, async (req, res) => {
+
+// router.get("/fetchallnotes", fetchuser, async (req, res) => {
+//     try {
+//         const notes = await Notes.find({ user: req.user.id }); //kyuki humne fetchuser vale middleware ko use kiya hai toh already req mai user or uski id hogi.
+//         res.json(notes)
+//     } catch (error) {
+//         console.log(error);
+//         success=false;
+//         res.status(500).send(success,"Internal server error.")
+//     }
+// })
+
+router.get('/fetchallnotes', fetchuser, async (req, res) => {
     try {
         const notes = await Notes.find({ user: req.user.id }); //kyuki humne fetchuser vale middleware ko use kiya hai toh already req mai user or uski id hogi.
         res.json(notes)
     } catch (error) {
-        console.log(error);
-        success=false;
-        res.status(500).send(success,"Internal server error.")
+        console.error(error.message);
+        res.status(500).send("Internal Server Error");
     }
 })
 

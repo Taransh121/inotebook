@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+// import React, { useEffect } from 'react';
 import {Link,useLocation} from "react-router-dom";
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 export const Navbar = () => {
@@ -7,6 +8,12 @@ export const Navbar = () => {
   // useEffect(()=>{
   //   console.log(location.pathname);  //This will print the pathname of the location
   // })
+  const history=useHistory();
+  const logoutbtn=()=>{
+    localStorage.removeItem("token");
+    history.push("/login")
+
+  }
   return (
     <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
   <div className="container-fluid">
@@ -24,12 +31,10 @@ export const Navbar = () => {
         </li>
       </ul>
         
-      <form className="d-flex" role="search">
-        {/* <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/> */}
-        {/* <button className="btn btn-outline-primary" type="submit">Search</button> */}
+      {!localStorage.getItem("token")? <form className="d-flex" role="search">
         <Link className="btn btn-outline-primary mx-2 " to="/login" role="button">Login</Link>
         <Link className="btn btn-outline-primary mx-2 " to="/signup" role="button">Signup</Link>
-      </form> 
+      </form> : <button onClick={logoutbtn}  className='btn btn-outline-primary'>Logout</button>}
       
     </div>
   </div>

@@ -11,7 +11,6 @@ export const Signup = (props) => {
 
     const signupbtn = async (e) => {
         e.preventDefault();
-        console.log("Clicking signupbtn");
         const response = await fetch(`http://localhost:5000/api/auth/createuser`, {
             method: "POST",
             headers: {
@@ -25,20 +24,22 @@ export const Signup = (props) => {
         console.log(json);
         if (json.success) {
             //Save the auth token Redirect
-            localStorage.setItem("token",json.authtoken);
-            history.push("/");
+            localStorage.setItem("token",json.authToken);
             props.showAlert("Account created successfully.","success")
+            history.push("/");
         }
         else{
             // alert("User Already exists")
             props.showAlert("Invalid Credentials","danger")
         }
+        
     }
     const onchange = (e) => {
         setCreds({ ...creds, [e.target.name]: e.target.value })  //Whatever is changing,its name shld be equalto its value.
     }
     return (
         <>
+        <h2>Create an account to use iNoteBook</h2>
             <form onSubmit={signupbtn} >
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Name</label>
